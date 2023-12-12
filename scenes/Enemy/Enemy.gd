@@ -29,4 +29,4 @@ func move(dir: Vector2, multiplier: float = 1):
 
 
 func _physics_process(delta):
-	
+	pass

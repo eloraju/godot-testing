@@ -13,15 +13,13 @@ func _physics_process(delta):
 	velocity = direction.normalized() * SPEED
 
 	if(velocity.x > 0):
-		scale.x = scale.y * 1
+		$PlayerSprite.scale.x = scale.y * 1
 	elif(velocity.x < 0):
-		scale.x = scale.y * -1
+		$PlayerSprite.scale.x = scale.y * -1
+
+	if(velocity.abs().length() > 0):
+		ap.play("move")
+	elif(velocity.length() == 0):
 		ap.play("idle")
-	
-	if(velocity.length() > 0):
-		if(ap.current_animation != "move"):
-			ap.play("move")
-		elif(ap.current_animation != "idle"):
-			ap.play("idle")
 	
 	move_and_slide()
