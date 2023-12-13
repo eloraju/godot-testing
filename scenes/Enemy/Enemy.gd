@@ -4,9 +4,8 @@ extends RigidBody2D
 # Initial values
 @export var maxHealth: int = 100
 @export var speed: float = 75
-@export var speedMultiplier:float = 1
 @export var attackSpeed: float = 500
-@export var attackRange: float = 10
+@export var attackRange: float = 300
 
 
 # Game time variables
@@ -32,7 +31,6 @@ func die():
 	queue_free()
 
 func seek_player(delta: float):
-	print("seeking player...")
 	if target != null:
 		var direction = (target - position).normalized()
 		if(direction.x > 0):
@@ -40,34 +38,46 @@ func seek_player(delta: float):
 		elif(direction.x < 0):
 			$EnemySprite.scale.x = scale.y * -1
 	
-		move_and_collide(direction * speed * speedMultiplier * delta)
-		global_rotation = 0.0
+		move_and_collide(direction * speed * delta)
 		ap.play("move")
-	# if distance to target < charge_range -> move faster & ap.play("charge") and unhide hitbox
-	# could/should this be done with a signal and a ChargeRange Area2D?
 
 func charge_attack(delta: float):
-	print("Charge attack!")
 	ap.play("hit")
+	if attackStartPos == Vector2.ZERO and attackEndPos == Vector2.ZERO:
+		var dir = (target - position).normalized()
+		attackStartPos = position
+		attackEndPos = attackStartPos + (dir * attackRange)
 
+
+func resetAttack():
+	$Hurtbox.hide()
+	$Collider.show()
+	attackEndPos = Vector2.ZERO
+	attackStartPos = Vector2.ZERO
+	state = EnemyState.SEEK
 
 func attack(delta: float):
-	print("attacking!")
 	$Collider.hide()
 	if not $Hurtbox.is_visible_in_tree():
 		$Hurtbox.show()
-	var dir = (target - position).normalized()
-	if attackStartPos == Vector2.ZERO and attackEndPos == Vector2.ZERO:
-		attackStartPos = position
-		attackEndPos = dir * attackRange
-	if position != attackEndPos:
+	
+	# Here the enemy tracks a bit too eagerly.
+	#if attackStartPos == Vector2.ZERO and attackEndPos == Vector2.ZERO:
+		#var dir = (target - position).normalized()
+		#attackStartPos = position
+		#attackEndPos = attackStartPos + (dir * attackRange)
+	
+
+	if (attackEndPos - position).abs().length() > 5:
+		var dir = (attackEndPos - position).normalized()
 		move_and_collide(dir * attackSpeed * delta)
 		ap.play("charge")
 	else:
-		state = EnemyState.SEEK
+		resetAttack()
 
 
 func _physics_process(delta):
+	global_rotation = 0.0
 	match state:
 		EnemyState.SEEK:
 			seek_player(delta)
@@ -87,12 +97,5 @@ func player_in_range(body: Node2D):
 		state = EnemyState.CHARGE
 
 func _on_animation_player_animation_finished(anim_name):
-	print("animation finished", anim_name)
 	if anim_name == "hit":
-		print("changing state")
 		state = EnemyState.ATTACK
-
-
-
-func _on_animation_player_animation_started(anim_name):
-	print(anim_name)

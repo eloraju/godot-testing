@@ -1,11 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://5sg66e01u5wr"]
+[gd_scene load_steps=25 format=3 uid="uid://5sg66e01u5wr"]
 
-[ext_resource type="Script" path="res://scenes/Player/player.gd" id="1_w0xpl"]
+[ext_resource type="Script" path="res://scenes/Player/Player.gd" id="1_wyysc"]
 [ext_resource type="Texture2D" uid="uid://dfc8yhitc01vk" path="res://assets/graphics/Knight/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Run.png" id="3_phtky"]
 [ext_resource type="Texture2D" uid="uid://8o6g70jipxva" path="res://assets/graphics/Knight/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Idle.png" id="3_uyetw"]
+[ext_resource type="Texture2D" uid="uid://bt7divjk0od6w" path="res://assets/graphics/Knight/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Roll.png" id="4_akb3o"]
+[ext_resource type="Script" path="res://scenes/Player/CharacterStateMachine.gd" id="5_udrm7"]
+[ext_resource type="Script" path="res://scenes/Player/MoveState.gd" id="6_kjcn8"]
+[ext_resource type="Script" path="res://scenes/Player/RollState.gd" id="7_0uql1"]
+[ext_resource type="Script" path="res://scenes/Player/DebugLabel.gd" id="9_5sdl1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vpp5g"]
-size = Vector2(11, 36)
+size = Vector2(11, 38)
 
 [sub_resource type="Animation" id="Animation_ygb3y"]
 length = 0.001
@@ -36,7 +41,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_paekp"]
 resource_name = "idle"
-length = 0.85
+length = 0.9
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -53,10 +58,22 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("PlayerSprite:frame")
+tracks/1/path = NodePath("PlayerSprite:hframes")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
@@ -82,36 +99,130 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("PlayerSprite:frame")
+tracks/1/path = NodePath("PlayerSprite:hframes")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
 }
 
+[sub_resource type="Animation" id="Animation_paqhv"]
+resource_name = "roll"
+length = 0.55
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_akb3o")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [12]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nulxo"]
 _data = {
 "RESET": SubResource("Animation_ygb3y"),
 "idle": SubResource("Animation_paekp"),
-"move": SubResource("Animation_i8hji")
+"move": SubResource("Animation_i8hji"),
+"roll": SubResource("Animation_paqhv")
 }
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m3y75"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_k78ba"]
+animation = &"move"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yptca"]
+animation = &"move"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_pggvp"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_m3y75")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_k78ba")
+blend_point_1/pos = 1.0
+blend_point_2/node = SubResource("AnimationNodeAnimation_yptca")
+blend_point_2/pos = -1.0
+blend_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_md3qj"]
+animation = &"roll"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0go06"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wvs53"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_krhmw"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_wghbx"]
+states/Move/node = SubResource("AnimationNodeBlendSpace1D_pggvp")
+states/Move/position = Vector2(381, 73.3333)
+states/Roll/node = SubResource("AnimationNodeAnimation_md3qj")
+states/Roll/position = Vector2(515, 73.5556)
+transitions = ["Start", "Move", SubResource("AnimationNodeStateMachineTransition_0go06"), "Move", "Roll", SubResource("AnimationNodeStateMachineTransition_wvs53"), "Roll", "Move", SubResource("AnimationNodeStateMachineTransition_krhmw")]
+graph_offset = Vector2(-184, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vi4n3"]
+font_size = 10
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 32
 collision_mask = 0
-script = ExtResource("1_w0xpl")
-SPEED = 100.0
+script = ExtResource("1_wyysc")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
-position = Vector2(4, -40)
+position = Vector2(4, -22)
 texture = ExtResource("3_uyetw")
 hframes = 10
 
 [node name="PlayerCollider" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, -18)
+position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_vpp5g")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -121,3 +232,39 @@ libraries = {
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nulxo")
+}
+tree_root = SubResource("AnimationNodeStateMachine_wghbx")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Move/blend_position = 0.0
+
+[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state", "character", "animation_tree")]
+script = ExtResource("5_udrm7")
+current_state = NodePath("Move")
+character = NodePath("..")
+animation_tree = NodePath("../AnimationTree")
+
+[node name="Move" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("roll_state")]
+script = ExtResource("6_kjcn8")
+roll_state = NodePath("../Roll")
+
+[node name="Roll" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("move_state")]
+script = ExtResource("7_0uql1")
+move_state = NodePath("../Move")
+can_act = false
+
+[node name="DebugLabel" type="Label" parent="." node_paths=PackedStringArray("stateMachine")]
+offset_left = -36.0
+offset_top = -34.0
+offset_right = 56.0
+offset_bottom = -20.0
+text = "State:"
+label_settings = SubResource("LabelSettings_vi4n3")
+script = ExtResource("9_5sdl1")
+stateMachine = NodePath("../CharacterStateMachine")
+
+[connection signal="animation_finished" from="AnimationTree" to="CharacterStateMachine/Roll" method="_on_animation_tree_animation_finished"]
+[connection signal="animation_started" from="AnimationTree" to="CharacterStateMachine/Roll" method="_on_animation_tree_animation_started"]
