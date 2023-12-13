@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cceq556eaniv8"]
+[gd_scene load_steps=13 format=3 uid="uid://cceq556eaniv8"]
 
 [ext_resource type="Texture2D" uid="uid://bou1xtqbbmiwj" path="res://assets/graphics/Cacodaemon Sprite Sheet.png" id="1_7nitg"]
 [ext_resource type="Script" path="res://scenes/Enemy/Enemy.gd" id="1_yhow2"]
@@ -17,7 +17,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("EnemySprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -34,7 +34,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("EnemySprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -50,7 +50,7 @@ length = 0.8
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("EnemySprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -63,11 +63,11 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_miyvq"]
 resource_name = "move"
 length = 0.4
-loop_mode = 1
+loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("EnemySprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -84,7 +84,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("EnemySprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -103,17 +103,20 @@ _data = {
 "move": SubResource("Animation_v0ear")
 }
 
-[node name="Enemy" type="RigidBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_oa7g3"]
+radius = 80.0
+
+[node name="Enemy" type="RigidBody2D" groups=["Enemies"]]
 gravity_scale = 0.0
 script = ExtResource("1_yhow2")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="EnemySprite" type="Sprite2D" parent="."]
 position = Vector2(-4, -2)
 texture = ExtResource("1_7nitg")
 hframes = 8
 vframes = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_uby6u")
 
 [node name="Hitbox" type="Area2D" parent="."]
@@ -123,6 +126,7 @@ shape = SubResource("CircleShape2D_ordn8")
 debug_color = Color(0.956863, 0, 0.537255, 0.419608)
 
 [node name="Hurtbox" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(8, 3)
@@ -133,3 +137,15 @@ debug_color = Color(0, 0.639216, 0.34902, 0.419608)
 libraries = {
 "": SubResource("AnimationLibrary_aaqqg")
 }
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 32
+
+[node name="ChargeZone" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_oa7g3")
+debug_color = Color(0.670588, 0.509804, 0, 0.419608)
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
+[connection signal="body_entered" from="Area2D" to="." method="player_in_range"]
