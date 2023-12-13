@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://8o6g70jipxva" path="res://assets/graphics/Knight/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Idle.png" id="3_uyetw"]
 [ext_resource type="Texture2D" uid="uid://bt7divjk0od6w" path="res://assets/graphics/Knight/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Roll.png" id="4_akb3o"]
 [ext_resource type="Script" path="res://scenes/Player/CharacterStateMachine.gd" id="5_udrm7"]
-[ext_resource type="Script" path="res://scenes/Player/MoveState.gd" id="6_kjcn8"]
+[ext_resource type="Script" path="res://scenes/Player/DefaultState.gd" id="6_r24fx"]
 [ext_resource type="Script" path="res://scenes/Player/RollState.gd" id="7_0uql1"]
 [ext_resource type="Script" path="res://scenes/Player/DebugLabel.gd" id="9_5sdl1"]
 
@@ -201,11 +201,11 @@ switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_wghbx"]
-states/Move/node = SubResource("AnimationNodeBlendSpace1D_pggvp")
-states/Move/position = Vector2(381, 73.3333)
-states/Roll/node = SubResource("AnimationNodeAnimation_md3qj")
-states/Roll/position = Vector2(515, 73.5556)
-transitions = ["Start", "Move", SubResource("AnimationNodeStateMachineTransition_0go06"), "Move", "Roll", SubResource("AnimationNodeStateMachineTransition_wvs53"), "Roll", "Move", SubResource("AnimationNodeStateMachineTransition_krhmw")]
+states/default/node = SubResource("AnimationNodeBlendSpace1D_pggvp")
+states/default/position = Vector2(381, 73.3333)
+states/roll/node = SubResource("AnimationNodeAnimation_md3qj")
+states/roll/position = Vector2(515, 73.5556)
+transitions = ["Start", "default", SubResource("AnimationNodeStateMachineTransition_0go06"), "default", "roll", SubResource("AnimationNodeStateMachineTransition_wvs53"), "roll", "default", SubResource("AnimationNodeStateMachineTransition_krhmw")]
 graph_offset = Vector2(-184, 5)
 
 [sub_resource type="LabelSettings" id="LabelSettings_vi4n3"]
@@ -239,21 +239,21 @@ libraries = {
 }
 tree_root = SubResource("AnimationNodeStateMachine_wghbx")
 anim_player = NodePath("../AnimationPlayer")
-parameters/Move/blend_position = 0.0
+parameters/default/blend_position = 0.0
 
 [node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state", "character", "animation_tree")]
 script = ExtResource("5_udrm7")
-current_state = NodePath("Move")
+current_state = NodePath("Default")
 character = NodePath("..")
 animation_tree = NodePath("../AnimationTree")
 
-[node name="Move" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("roll_state")]
-script = ExtResource("6_kjcn8")
+[node name="Default" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("roll_state")]
+script = ExtResource("6_r24fx")
 roll_state = NodePath("../Roll")
 
 [node name="Roll" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("move_state")]
 script = ExtResource("7_0uql1")
-move_state = NodePath("../Move")
+move_state = NodePath("../Default")
 can_act = false
 
 [node name="DebugLabel" type="Label" parent="." node_paths=PackedStringArray("stateMachine")]
@@ -267,4 +267,3 @@ script = ExtResource("9_5sdl1")
 stateMachine = NodePath("../CharacterStateMachine")
 
 [connection signal="animation_finished" from="AnimationTree" to="CharacterStateMachine/Roll" method="_on_animation_tree_animation_finished"]
-[connection signal="animation_started" from="AnimationTree" to="CharacterStateMachine/Roll" method="_on_animation_tree_animation_started"]

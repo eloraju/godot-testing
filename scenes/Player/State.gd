@@ -18,3 +18,6 @@ func on_exit():
 
 func state_process(delta: float):
 	pass
+
+func state_physics_process(delta: float):
+	pass

@@ -15,12 +15,9 @@ func on_enter():
 
 	character.velocity = roll_dir.normalized() * roll_speed
 
+func state_physics_process(delta):
+	character.velocity = roll_dir.normalized() * roll_speed
+
 func _on_animation_tree_animation_finished(anim_name):
-	print("Animation: "+anim_name+" done")
 	if anim_name == roll_animation:
 		next_state = move_state
-
-
-
-func _on_animation_tree_animation_started(anim_name):
-	print("Animation: "+anim_name+" STARTED")
