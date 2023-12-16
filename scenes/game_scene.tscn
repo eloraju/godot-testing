@@ -3,7 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://b2pykbpr5ooh7" path="res://assets/graphics/Small Forest Asset Pack/Trees/Tree-3/Tree-3-1.png" id="1_gq3yu"]
 [ext_resource type="Script" path="res://scenes/game_scene.gd" id="1_iphgp"]
 [ext_resource type="PackedScene" uid="uid://5sg66e01u5wr" path="res://scenes/Player/player.tscn" id="1_n2n1m"]
-[ext_resource type="PackedScene" uid="uid://cceq556eaniv8" path="res://scenes/Enemy/Enemy.tscn" id="2_7nk78"]
 [ext_resource type="Texture2D" uid="uid://0bgcvxklwwlb" path="res://assets/graphics/Small Forest Asset Pack/Trees/Tree-3/Tree-3-2.png" id="2_v6npa"]
 [ext_resource type="Texture2D" uid="uid://rgj2squ2e45c" path="res://assets/graphics/Small Forest Asset Pack/Bushes/Bush-3.png" id="3_yj4ma"]
 [ext_resource type="Texture2D" uid="uid://cmaq3uegyq3xg" path="res://assets/graphics/Small Forest Asset Pack/Bushes/Bush-4.png" id="4_tp24j"]
@@ -20,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://dllyrg8oblcs0" path="res://assets/graphics/Small Forest Asset Pack/Trees/Tree-3/Tree-3-4.png" id="15_8jef3"]
 [ext_resource type="Texture2D" uid="uid://85j67eu3we4t" path="res://assets/graphics/Small Forest Asset Pack/Bushes/Bush-1.png" id="16_t88pd"]
 [ext_resource type="Texture2D" uid="uid://b421qd1kbgr1h" path="res://assets/graphics/Small Forest Asset Pack/Bushes/Bush-2.png" id="17_ku2x7"]
+[ext_resource type="PackedScene" uid="uid://dqc8206sd6n4d" path="res://scenes/Enemy/Cacodemon/Cacodemon.tscn" id="20_y44jk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1gqd7"]
 texture = ExtResource("1_gq3yu")
@@ -465,5 +465,4 @@ layer_0/tile_data = PackedInt32Array(-196614, 18, 1, -131078, 18, 0, -196613, 65
 [node name="Player" parent="." instance=ExtResource("1_n2n1m")]
 position = Vector2(72, 6)
 
-[node name="Enemy" parent="." instance=ExtResource("2_7nk78")]
-position = Vector2(-224, -7)
+[node name="Cacodemon" parent="." instance=ExtResource("20_y44jk")]

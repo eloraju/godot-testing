@@ -239,7 +239,7 @@ libraries = {
 }
 tree_root = SubResource("AnimationNodeStateMachine_wghbx")
 anim_player = NodePath("../AnimationPlayer")
-parameters/default/blend_position = 0.0
+parameters/default/blend_position = 2.08165e-12
 
 [node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state", "character", "animation_tree")]
 script = ExtResource("5_udrm7")
@@ -265,5 +265,9 @@ text = "State:"
 label_settings = SubResource("LabelSettings_vi4n3")
 script = ExtResource("9_5sdl1")
 stateMachine = NodePath("../CharacterStateMachine")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [connection signal="animation_finished" from="AnimationTree" to="CharacterStateMachine/Roll" method="_on_animation_tree_animation_finished"]

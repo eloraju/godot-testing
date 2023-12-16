@@ -2,7 +2,7 @@ extends State
 
 @export var roll_animation: String = "roll"
 @export var move_state: State
-@export var roll_speed: float = 300
+@export var roll_speed: float = 500
 
 var roll_dir: Vector2 = Vector2.ZERO
 

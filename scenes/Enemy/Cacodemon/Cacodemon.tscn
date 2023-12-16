@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://cceq556eaniv8"]
+[gd_scene load_steps=13 format=3 uid="uid://dqc8206sd6n4d"]
 
-[ext_resource type="Texture2D" uid="uid://bou1xtqbbmiwj" path="res://assets/graphics/Cacodaemon Sprite Sheet.png" id="1_7nitg"]
-[ext_resource type="Script" path="res://scenes/Enemy/Enemy.gd" id="1_yhow2"]
+[ext_resource type="Script" path="res://scenes/Enemy/Cacodemon/Cacodemon.gd" id="1_5x32p"]
+[ext_resource type="Texture2D" uid="uid://bou1xtqbbmiwj" path="res://assets/graphics/Cacodaemon Sprite Sheet.png" id="2_ynqul"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uby6u"]
 radius = 12.0
@@ -102,13 +102,18 @@ _data = {
 "move": SubResource("Animation_v0ear")
 }
 
-[node name="Enemy" type="RigidBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_oa7g3"]
+radius = 80.0
+
+[node name="Cacodemon" type="RigidBody2D" node_paths=PackedStringArray("sprite")]
 gravity_scale = 0.0
-script = ExtResource("1_yhow2")
+script = ExtResource("1_5x32p")
+sprite = NodePath("EnemySprite")
+sprite_default_direcion = 1
 
 [node name="EnemySprite" type="Sprite2D" parent="."]
 position = Vector2(-4, -2)
-texture = ExtResource("1_7nitg")
+texture = ExtResource("2_ynqul")
 hframes = 8
 vframes = 4
 
@@ -134,5 +139,14 @@ libraries = {
 "": SubResource("AnimationLibrary_aaqqg")
 }
 
+[node name="ChargeZoneArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 32
+
+[node name="ChargeZone" type="CollisionShape2D" parent="ChargeZoneArea"]
+shape = SubResource("CircleShape2D_oa7g3")
+debug_color = Color(0.670588, 0.509804, 0, 0.419608)
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
+[connection signal="body_entered" from="ChargeZoneArea" to="." method="player_in_range"]

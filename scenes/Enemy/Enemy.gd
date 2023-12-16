@@ -1,101 +1,58 @@
 class_name Enemy
 extends RigidBody2D
 
+
+
 # Initial values
 @export var maxHealth: int = 100
 @export var speed: float = 75
-@export var attackSpeed: float = 500
-@export var attackRange: float = 300
+@export var sprite : Sprite2D
+@export var sprite_default_direcion: SpriteDefaultDirection
 
-
+enum SpriteDefaultDirection {
+	LEFT,
+	RIGHT
+}
 # Game time variables
-var currentHealth: int = 100
-var target: Vector2
-var state = EnemyState.SEEK
-var attackStartPos: Vector2 = Vector2.ZERO
-var attackEndPos: Vector2 = Vector2.ZERO
+var _currentHealth: int = 100
+var _playerPos: Vector2
 
 # References
 @onready var ap = $AnimationPlayer
-@onready var timer = $Timer
 
-# Monster states
-enum EnemyState {
-	SEEK,
-	CHARGE,
-	ATTACK
-}
+func _update_sprite_direction(direction: Vector2):
+	if(direction.x > 0):
+		sprite.flip_h = sprite_default_direcion == SpriteDefaultDirection.LEFT
+	elif(direction.x < 0):
+		sprite.flip_h = sprite_default_direcion == SpriteDefaultDirection.RIGHT
+	pass
 
-func die():
+func _move_towards(target: Vector2, speed: float, delta: float):
+	if (target - position).abs().length() > speed * delta:
+		var step = (target-position).normalized() * speed * delta
+		_update_sprite_direction(step)
+		move_and_collide(step)
+	else:
+		move_and_collide(target - position)
+
+func _move_toward_player(speed: float, delta: float):
+	_move_towards(_playerPos, speed, delta)
+	
+
+func _ready():
+	add_to_group("Enemies")
+	_enemy_ready()
+
+func _die():
+	_before_enemy_death()
 	get_parent().remove_child(self)
 	queue_free()
 
-func seek_player(delta: float):
-	if target != null:
-		var direction = (target - position).normalized()
-		if(direction.x > 0):
-			$EnemySprite.scale.x = scale.y * 1
-		elif(direction.x < 0):
-			$EnemySprite.scale.x = scale.y * -1
+func _player_position_update(playerPos: Vector2):
+		_playerPos = playerPos
+
+func _enemy_ready():
+	pass
 	
-		move_and_collide(direction * speed * delta)
-		ap.play("move")
-
-func charge_attack(delta: float):
-	ap.play("hit")
-	if attackStartPos == Vector2.ZERO and attackEndPos == Vector2.ZERO:
-		var dir = (target - position).normalized()
-		attackStartPos = position
-		attackEndPos = attackStartPos + (dir * attackRange)
-
-
-func resetAttack():
-	$Hurtbox.hide()
-	$Collider.show()
-	attackEndPos = Vector2.ZERO
-	attackStartPos = Vector2.ZERO
-	state = EnemyState.SEEK
-
-func attack(delta: float):
-	$Collider.hide()
-	if not $Hurtbox.is_visible_in_tree():
-		$Hurtbox.show()
-	
-	# Here the enemy tracks a bit too eagerly.
-	#if attackStartPos == Vector2.ZERO and attackEndPos == Vector2.ZERO:
-		#var dir = (target - position).normalized()
-		#attackStartPos = position
-		#attackEndPos = attackStartPos + (dir * attackRange)
-	
-
-	if (attackEndPos - position).abs().length() > 5:
-		var dir = (attackEndPos - position).normalized()
-		move_and_collide(dir * attackSpeed * delta)
-		ap.play("charge")
-	else:
-		resetAttack()
-
-
-func _physics_process(delta):
-	global_rotation = 0.0
-	match state:
-		EnemyState.SEEK:
-			seek_player(delta)
-		EnemyState.CHARGE:
-			charge_attack(delta)
-		EnemyState.ATTACK:
-			attack(delta)
-
-
-
-func player_position_update(playerPos: Vector2):
-	if state != EnemyState.ATTACK:
-		target = playerPos
-
-func player_in_range(body: Node2D):
-	if state == EnemyState.SEEK:
-		state = EnemyState.CHARGE
-
-func _on_animation_player_animation_finished(anim_name):
-	if anim_name == "hit":
-		state = EnemyState.ATTACK
+func _before_enemy_death():
+	pass

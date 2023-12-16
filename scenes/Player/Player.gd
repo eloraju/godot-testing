@@ -15,7 +15,8 @@ func update_facing_direction():
 		$PlayerSprite.flip_h = true
 
 func update_animation_params():
-	at.set("parameters/Move/blend_position", velocity.length())
+	at.set("parameters/default/blend_position", velocity.normalized().length())
+	($Label as Label).text = "Blend: " + str(at.get("parameters/default/blend_position"))
 
 func _physics_process(delta):
 	var move_dir = Input.get_vector("left", "right", "up", "down")
@@ -28,4 +29,4 @@ func _physics_process(delta):
 	update_animation_params()
 	update_facing_direction()
 	move_and_slide()
-	get_tree().call_group("Enemies", "player_position_update", position)
+	get_tree().call_group("Enemies", "_player_position_update", position)
