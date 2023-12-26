@@ -5,6 +5,8 @@ extends CharacterBody2D
 
 @export var move_speed: float = 200
 
+var last_move_vec: Vector2 = Vector2(1,0)
+
 func _ready():
 	at.active = true;
 
@@ -16,13 +18,13 @@ func update_facing_direction():
 
 func update_animation_params():
 	at.set("parameters/default/blend_position", velocity.normalized().length())
-	($Label as Label).text = "Blend: " + str(at.get("parameters/default/blend_position"))
 
 func _physics_process(delta):
 	var move_dir = Input.get_vector("left", "right", "up", "down")
 	
 	if move_dir.length() > 0 && stateMachine.can_act():
 		velocity = move_dir * move_speed
+		last_move_vec = move_dir
 	else:
 		velocity = velocity.normalized() * move_toward(velocity.length(),0,move_speed)
 	

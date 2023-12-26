@@ -7,17 +7,18 @@ var character: CharacterBody2D
 var anim: AnimationTree
 var next_state: State
 
-func state_input(input: InputEvent):
+
+func _state_input(input: InputEvent):
 	pass
 
-func on_enter():
+func _state_on_enter():
 	pass
 	
-func on_exit():
+func _state_on_exit():
 	pass
 
-func state_process(delta: float):
+func _state_process(delta: float):
 	pass
 
-func state_physics_process(delta: float):
+func _state_physics_process(delta: float):
 	pass

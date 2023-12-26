@@ -10,7 +10,7 @@ radius = 12.0
 radius = 15.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2c8iq"]
-radius = 15.0
+radius = 21.64
 
 [sub_resource type="Animation" id="Animation_amyou"]
 length = 0.001
@@ -127,12 +127,12 @@ shape = SubResource("CircleShape2D_ordn8")
 debug_color = Color(0.956863, 0, 0.537255, 0.419608)
 
 [node name="Hurtbox" type="Area2D" parent="."]
-visible = false
+collision_layer = 2
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(8, 3)
 shape = SubResource("CircleShape2D_2c8iq")
-debug_color = Color(0, 0.639216, 0.34902, 0.419608)
+debug_color = Color(0, 0.639216, 0.34902, 0.513726)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

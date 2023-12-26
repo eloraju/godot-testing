@@ -52,13 +52,13 @@ func attack(delta: float):
 
 func _physics_process(delta):
 	global_rotation = 0.0
-	match state:
-		EnemyState.SEEK:
-			seek_player(delta)
-		EnemyState.CHARGE:
-			charge_attack(delta)
-		EnemyState.ATTACK:
-			attack(delta)
+	#match state:
+		#EnemyState.SEEK:
+			#seek_player(delta)
+		#EnemyState.CHARGE:
+			#charge_attack(delta)
+		#EnemyState.ATTACK:
+			#attack(delta)
 
 func player_in_range(body: Node2D):
 	if state == EnemyState.SEEK:

@@ -1,12 +1,15 @@
-[gd_scene load_steps=25 format=3 uid="uid://5sg66e01u5wr"]
+[gd_scene load_steps=38 format=3 uid="uid://5sg66e01u5wr"]
 
 [ext_resource type="Script" path="res://scenes/Player/Player.gd" id="1_wyysc"]
 [ext_resource type="Texture2D" uid="uid://dfc8yhitc01vk" path="res://assets/graphics/Knight/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Run.png" id="3_phtky"]
 [ext_resource type="Texture2D" uid="uid://8o6g70jipxva" path="res://assets/graphics/Knight/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Idle.png" id="3_uyetw"]
 [ext_resource type="Texture2D" uid="uid://bt7divjk0od6w" path="res://assets/graphics/Knight/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_Roll.png" id="4_akb3o"]
+[ext_resource type="Texture2D" uid="uid://cbin5iyad6efr" path="res://assets/graphics/Knight/FreeKnight_v1/Colour1/Outline/120x80_PNGSheets/_AttackComboNoMovement.png" id="5_j3230"]
 [ext_resource type="Script" path="res://scenes/Player/CharacterStateMachine.gd" id="5_udrm7"]
+[ext_resource type="Script" path="res://scenes/Player/DebugPanel.gd" id="6_f535o"]
 [ext_resource type="Script" path="res://scenes/Player/DefaultState.gd" id="6_r24fx"]
 [ext_resource type="Script" path="res://scenes/Player/RollState.gd" id="7_0uql1"]
+[ext_resource type="Script" path="res://scenes/Player/AttackState.gd" id="8_ujjj4"]
 [ext_resource type="Script" path="res://scenes/Player/DebugLabel.gd" id="9_5sdl1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vpp5g"]
@@ -162,13 +165,169 @@ tracks/2/keys = {
 "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 }
 
+[sub_resource type="Animation" id="Animation_vpfo0"]
+resource_name = "attack_1"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_j3230")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CharacterStateMachine/Attack/AttackHitbox:monitoring")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_dhp3h"]
+resource_name = "attack_2"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_j3230")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 6, 7, 8]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CharacterStateMachine/Attack/AttackHitbox:monitoring")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_p7cs2"]
+resource_name = "attack_full"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_j3230")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nulxo"]
 _data = {
 "RESET": SubResource("Animation_ygb3y"),
+"attack_1": SubResource("Animation_vpfo0"),
+"attack_2": SubResource("Animation_dhp3h"),
+"attack_full": SubResource("Animation_p7cs2"),
 "idle": SubResource("Animation_paekp"),
 "move": SubResource("Animation_i8hji"),
 "roll": SubResource("Animation_paqhv")
 }
+
+[sub_resource type="LabelSettings" id="LabelSettings_vi4n3"]
+font_size = 10
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_d8mo1"]
+animation = &"attack_1"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_obkrs"]
+animation = &"attack_2"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m3y75"]
 animation = &"idle"
@@ -200,20 +359,38 @@ advance_mode = 2
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pxiba"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2inr8"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2ec20"]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ousrl"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_wghbx"]
+states/End/position = Vector2(900, 99.7778)
+states/attack_1/node = SubResource("AnimationNodeAnimation_d8mo1")
+states/attack_1/position = Vector2(382.333, 173)
+states/attack_2/node = SubResource("AnimationNodeAnimation_obkrs")
+states/attack_2/position = Vector2(531.667, 174.111)
 states/default/node = SubResource("AnimationNodeBlendSpace1D_pggvp")
 states/default/position = Vector2(381, 73.3333)
 states/roll/node = SubResource("AnimationNodeAnimation_md3qj")
 states/roll/position = Vector2(515, 73.5556)
-transitions = ["Start", "default", SubResource("AnimationNodeStateMachineTransition_0go06"), "default", "roll", SubResource("AnimationNodeStateMachineTransition_wvs53"), "roll", "default", SubResource("AnimationNodeStateMachineTransition_krhmw")]
-graph_offset = Vector2(-184, 5)
+transitions = ["Start", "default", SubResource("AnimationNodeStateMachineTransition_0go06"), "default", "roll", SubResource("AnimationNodeStateMachineTransition_wvs53"), "roll", "default", SubResource("AnimationNodeStateMachineTransition_krhmw"), "default", "attack_1", SubResource("AnimationNodeStateMachineTransition_pxiba"), "attack_1", "default", SubResource("AnimationNodeStateMachineTransition_2inr8"), "attack_1", "attack_2", SubResource("AnimationNodeStateMachineTransition_2ec20"), "attack_2", "default", SubResource("AnimationNodeStateMachineTransition_ousrl")]
+graph_offset = Vector2(-202, 9)
 
-[sub_resource type="LabelSettings" id="LabelSettings_vi4n3"]
-font_size = 10
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i41hv"]
+size = Vector2(42, 46)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 32
-collision_mask = 0
+collision_mask = 2
 script = ExtResource("1_wyysc")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
@@ -231,9 +408,28 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position_smoothing_enabled = true
+zoom = Vector2(3, 3)
+
+[node name="DebugPanel" type="Panel" parent="Camera2D"]
+offset_left = -316.0
+offset_top = -176.0
+offset_right = -33.0
+offset_bottom = 177.0
+script = ExtResource("6_f535o")
+
+[node name="DebugLabel" type="Label" parent="Camera2D/DebugPanel" node_paths=PackedStringArray("stateMachine", "player")]
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 100.0
+offset_bottom = 20.0
+text = "State:"
+label_settings = SubResource("LabelSettings_vi4n3")
+script = ExtResource("9_5sdl1")
+stateMachine = NodePath("../../../CharacterStateMachine")
+player = NodePath("../../..")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
+active = false
 libraries = {
 "": SubResource("AnimationLibrary_nulxo")
 }
@@ -247,27 +443,33 @@ current_state = NodePath("Default")
 character = NodePath("..")
 animation_tree = NodePath("../AnimationTree")
 
-[node name="Default" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("roll_state")]
+[node name="Default" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("roll_state", "attack_state")]
 script = ExtResource("6_r24fx")
 roll_state = NodePath("../Roll")
+attack_state = NodePath("../Attack")
 
-[node name="Roll" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("move_state")]
+[node name="Roll" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("return_state")]
 script = ExtResource("7_0uql1")
-move_state = NodePath("../Default")
+return_state = NodePath("../Default")
 can_act = false
 
-[node name="DebugLabel" type="Label" parent="." node_paths=PackedStringArray("stateMachine")]
-offset_left = -36.0
-offset_top = -34.0
-offset_right = 56.0
-offset_bottom = -20.0
-text = "State:"
-label_settings = SubResource("LabelSettings_vi4n3")
-script = ExtResource("9_5sdl1")
-stateMachine = NodePath("../CharacterStateMachine")
+[node name="Attack" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("return_state", "hitbox")]
+script = ExtResource("8_ujjj4")
+return_state = NodePath("../Default")
+hitbox = NodePath("AttackHitbox")
+can_act = false
 
-[node name="Label" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="AttackHitbox" type="Area2D" parent="CharacterStateMachine/Attack"]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterStateMachine/Attack/AttackHitbox"]
+position = Vector2(30, -5)
+shape = SubResource("RectangleShape2D_i41hv")
 
 [connection signal="animation_finished" from="AnimationTree" to="CharacterStateMachine/Roll" method="_on_animation_tree_animation_finished"]
+[connection signal="animation_finished" from="AnimationTree" to="CharacterStateMachine/Attack" method="_on_animation_tree_animation_finished"]
+[connection signal="animation_finished" from="AnimationTree" to="Camera2D/DebugPanel/DebugLabel" method="_on_animation_tree_animation_finished"]
+[connection signal="animation_started" from="AnimationTree" to="Camera2D/DebugPanel/DebugLabel" method="_on_animation_tree_animation_started"]
+[connection signal="area_entered" from="CharacterStateMachine/Attack/AttackHitbox" to="CharacterStateMachine/Attack" method="_on_attack_hitbox_area_entered"]
+[connection signal="body_entered" from="CharacterStateMachine/Attack/AttackHitbox" to="CharacterStateMachine/Attack" method="_on_attack_hitbox_body_entered"]

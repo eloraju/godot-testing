@@ -23,18 +23,19 @@ func can_act() -> bool:
 func _process(delta):
 	if(current_state.next_state != null):
 		switch_states(current_state.next_state)
-	current_state.state_process(delta)
+	
+	current_state._state_process(delta)
 	
 func _physics_process(delta):
-	current_state.state_physics_process(delta)
+	current_state._state_physics_process(delta)
 
 func switch_states(new_state: State):
 	if(current_state != null):
-		current_state.on_exit()
+		current_state._state_on_exit()
 		current_state.next_state = null
 	
 	current_state = new_state
-	current_state.on_enter()
+	current_state._state_on_enter()
 
 func _input(event: InputEvent):
-	current_state.state_input(event)
+	current_state._state_input(event)
