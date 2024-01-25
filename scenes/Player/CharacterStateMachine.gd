@@ -39,3 +39,7 @@ func switch_states(new_state: State):
 
 func _input(event: InputEvent):
 	current_state._state_input(event)
+
+
+func _on_animation_tree_animation_finished(anim_name):
+	current_state._state_anim_finished(anim_name)

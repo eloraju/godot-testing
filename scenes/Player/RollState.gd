@@ -1,13 +1,15 @@
 extends State
 
 @export var roll_animation: String = "roll"
-@export var roll_speed: float = 500
+@export var start_roll_speed: float = 1000
 @export var return_state: State
 
+@onready var roll_speed = start_roll_speed
 var roll_dir: Vector2 = Vector2.ZERO
 
 func _state_on_exit():
 	roll_dir = Vector2.ZERO
+	roll_speed = start_roll_speed
 
 func _state_on_enter():
 	if roll_dir == Vector2.ZERO:

@@ -22,3 +22,6 @@ func _state_process(delta: float):
 
 func _state_physics_process(delta: float):
 	pass
+
+func _state_anim_finished(anim_name: String):
+	pass

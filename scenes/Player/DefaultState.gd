@@ -4,6 +4,8 @@ extends State
 @export var roll_state: State
 @export var attack_state: State
 
+func _state_on_enter():
+	anim["parameters/playback"].travel("default")
 
 func _state_input(input: InputEvent):
 	var roll = Input.is_action_just_pressed("roll")
