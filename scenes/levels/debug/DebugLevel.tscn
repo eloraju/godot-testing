@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://ytroitgqbjxp"]
+
+[ext_resource type="Script" path="res://scenes/levels/debug/debug_button.gd" id="1_ftj45"]
+
+[node name="DebugLevel" type="Node2D"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="MainContainerVBox" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.5
+offset_top = -15.5
+offset_right = -19.5
+offset_bottom = -15.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/MainContainerVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="Control/MainContainerVBox/CenterContainer"]
+layout_mode = 2
+text = "Back to main menu"
+script = ExtResource("1_ftj45")
